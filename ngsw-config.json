@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": ["/index.html", "/*.css", "/*.js", "/manifest.webmanifest", "/icons/*"]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/**/*.(png|jpg|jpeg|svg|webp|woff2)"]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "public-products",
+      "urls": ["/api/public/products**", "/api/products/*"],
+      "cacheConfig": {
+        "maxSize": 30,
+        "maxAge": "12h",
+        "strategy": "freshness",
+        "timeout": "5s"
+      }
+    }
+  ]
+}

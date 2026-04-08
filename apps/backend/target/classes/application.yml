@@ -1,0 +1,112 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: farmers-app-backend
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/farmers_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:0}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX:10}
+      minimum-idle: ${DB_POOL_MIN:2}
+      connection-timeout: ${DB_CONN_TIMEOUT_MS:30000}
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: ${JPA_SHOW_SQL:true}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # =========================
+  # MONGODB - URI via env/Vault
+  # =========================
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017}
+      database: ${SPRING_DATA_MONGODB_DATABASE:farmers_db}
+
+  # =========================
+  # STATIC RESOURCES (DEV)
+  # =========================
+  web:
+    resources:
+      add-mappings: true
+      cache:
+        period: 0
+
+  # =========================
+  # DEVTOOLS
+  # =========================
+  devtools:
+    restart:
+      enabled: true
+      exclude: static/**,public/**
+    livereload:
+      enabled: true
+
+  # =========================
+  # MAIL - password via env/Vault
+  # =========================
+  mail:
+    host: ${SPRING_MAIL_HOST:smtp.zoho.in}
+    port: ${SPRING_MAIL_PORT:465}
+    username: ${SPRING_MAIL_USERNAME:support@sougba.shop}
+    password: ${SPRING_MAIL_PASSWORD:#yEu1jpe74}
+    protocol: ${SPRING_MAIL_PROTOCOL:smtp}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:VGhpc0lzQVNlY3VyZURlbW9TZWNyZXRLZXlGb3JGYXJtZXJzQXBw}
+    access-minutes: ${JWT_ACCESS_MINUTES:30}
+    refresh-days: ${JWT_REFRESH_DAYS:14}
+  r2:
+    account-id: ${R2_ACCOUNT_ID:}
+    endpoint: ${R2_ENDPOINT:https://112fe7d6b653e72c416edb92e4c6744c.r2.cloudflarestorage.com}
+    bucket: ${R2_BUCKET:files-sougba}
+    region: ${R2_REGION:auto}
+    prefix: ${R2_PREFIX:sougba-dev}
+    secret-access-key: ${R2_SECRET_ACCESS_KEY:${R2_SECRET_KEY:9f67a1f8ff17bc3c59a0dbffca83c2aa}}
+    access-key-id: ${R2_ACCESS_KEY_ID:${R2_ACCESS_KEY:dadfc2ea7524909672180c61e84a82736ec513afae64cb3e5d32433c9ccb166a}}
+    public-base-url: ${R2_PUBLIC_BASE_URL:${R2_PUBLIC_URL:https://files.sougba.com}}
+    max-file-mb: ${R2_MAX_FILE_MB:8}
+    allowed-mime: ${R2_ALLOWED_MIME:image/jpeg,image/png,image/webp}
+
+
+
+
+# =========================
+# LOGGING (DEV VERBOSE)
+# =========================
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.mail: DEBUG
+    org.apache.commons.mail: DEBUG
